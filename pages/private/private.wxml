@@ -1,0 +1,5 @@
+<!--pages/private/private.wxml-->
+
+	<button bindtap="getInfo">获取头像昵称</button>
+	<button bindtap="find_device">发现设备</button>
+	

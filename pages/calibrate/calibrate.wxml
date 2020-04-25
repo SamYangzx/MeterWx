@@ -1,0 +1,11 @@
+<!--pages/calibrate/calibrate.wxml-->
+
+<scroll-view class='main-scroll' scroll-y style="height: 80%">
+	<text style="width:200px; height:200px; display:flex; justify-content:center; align-items:center;">{{measure}}</text>
+</scroll-view>
+
+<view class="flex-row" style="display: flex;flex-direction: row;">
+	<button bindtap="reset">清零</button>
+	<button bindtap="confirm">确认</button>
+	<button bindtap="save">保存</button>
+</view>

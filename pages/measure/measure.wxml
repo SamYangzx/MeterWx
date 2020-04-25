@@ -1,0 +1,27 @@
+<!--pages/measure/measure.wxml-->
+<text>{{battery}}</text>
+
+
+<scroll-view class='main-scroll' scroll-y style="height: 20%">
+	<view class="flex-row" style="display: flex;flex-direction: row;">
+		<text style="width:200px; height:200px; display:flex; justify-content:center; align-items:center;">{{measure}}</text>
+		<text>{{unit}}</text>
+	</view>
+
+</scroll-view>
+<scroll-view class='main-scroll' scroll-y style="height: 60%">
+	<text>{{textLog}}</text>
+
+</scroll-view>
+
+<view class="flex-row" style="display: flex;flex-direction: row;">
+	<button bindtap="reset">清零</button>
+	<button bindtap="maxValue">峰值</button>
+	<view class="section">
+		<picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+			<view class="picker">
+				单位：{{multiArray[1][multiIndex[1]]}}
+			</view>
+		</picker>
+	</view>
+</view>

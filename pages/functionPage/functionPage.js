@@ -7,12 +7,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    textLog:"",
+    textLog: "",
     deviceId: "",
     name: "",
-    allRes:"",
-    serviceId:"",
-    readCharacteristicId:"",
+    allRes: "",
+    serviceId: "",
+    readCharacteristicId: "",
     writeCharacteristicId: "",
     notifyCharacteristicId: "",
     connected: true,
@@ -27,12 +27,12 @@ Page({
     var devid = decodeURIComponent(options.deviceId);
     var devname = decodeURIComponent(options.name);
     var devserviceid = decodeURIComponent(options.serviceId);
-    var log = that.data.textLog + "设备名=" + devname +"\n设备UUID="+devid+"\n服务UUID="+devserviceid+ "\n";
+    var log = that.data.textLog + "设备名=" + devname + "\n设备UUID=" + devid + "\n服务UUID=" + devserviceid + "\n";
     this.setData({
       textLog: log,
       deviceId: devid,
       name: devname,
-      serviceId: devserviceid 
+      serviceId: devserviceid
     });
     //获取特征值
     that.getBLEDeviceCharacteristics();
@@ -56,7 +56,7 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    
+
   },
 
   //清空log日志
@@ -67,7 +67,7 @@ Page({
     });
   },
   //返回蓝牙是否正处于链接状态
-  onBLEConnectionStateChange:function (onFailCallback) {
+  onBLEConnectionStateChange: function (onFailCallback) {
     wx.onBLEConnectionStateChange(function (res) {
       // 该方法回调中可以用于处理连接意外断开等异常情况
       console.log(`device ${res.deviceId} state has changed, connected: ${res.connected}`);
@@ -93,7 +93,7 @@ Page({
     }, 2000)
   },
   //获取蓝牙设备某个服务中的所有 characteristic（特征值）
-  getBLEDeviceCharacteristics: function (order){
+  getBLEDeviceCharacteristics: function (order) {
     var that = this;
     wx.getBLEDeviceCharacteristics({
       deviceId: that.data.deviceId,
@@ -101,23 +101,23 @@ Page({
       success: function (res) {
         for (let i = 0; i < res.characteristics.length; i++) {
           let item = res.characteristics[i]
-          if (item.properties.read) {//该特征值是否支持 read 操作
+          if (item.properties.read) { //该特征值是否支持 read 操作
             var log = that.data.textLog + "该特征值支持 read 操作:" + item.uuid + "\n";
             that.setData({
               textLog: log,
               readCharacteristicId: item.uuid
             });
           }
-          if (item.properties.write) {//该特征值是否支持 write 操作
+          if (item.properties.write) { //该特征值是否支持 write 操作
             var log = that.data.textLog + "该特征值支持 write 操作:" + item.uuid + "\n";
             that.setData({
               textLog: log,
               writeCharacteristicId: item.uuid,
-              canWrite:true
+              canWrite: true
             });
-            
+
           }
-          if (item.properties.notify || item.properties.indicate) {//该特征值是否支持 notify或indicate 操作
+          if (item.properties.notify || item.properties.indicate) { //该特征值是否支持 notify或indicate 操作
             var log = that.data.textLog + "该特征值支持 notify 操作:" + item.uuid + "\n";
             that.setData({
               textLog: log,
@@ -134,7 +134,7 @@ Page({
   },
   //启用低功耗蓝牙设备特征值变化时的 notify 功能，订阅特征值。
   //注意：必须设备的特征值支持notify或者indicate才可以成功调用，具体参照 characteristic 的 properties 属性
-  notifyBLECharacteristicValueChange: function (){
+  notifyBLECharacteristicValueChange: function () {
     var that = this;
     wx.notifyBLECharacteristicValueChange({
       state: true, // 启用 notify 功能
@@ -142,11 +142,11 @@ Page({
       serviceId: that.data.serviceId,
       characteristicId: that.data.notifyCharacteristicId,
       success: function (res) {
-        var log = that.data.textLog + "notify启动成功" + res.errMsg+"\n";
-        that.setData({ 
+        var log = that.data.textLog + "notify启动成功" + res.errMsg + "\n";
+        that.setData({
           textLog: log,
         });
-        that.onBLECharacteristicValueChange();   //监听特征值变化
+        that.onBLECharacteristicValueChange(); //监听特征值变化
       },
       fail: function (res) {
         wx.showToast({
@@ -162,12 +162,12 @@ Page({
 
   },
   //监听低功耗蓝牙设备的特征值变化。必须先启用notify接口才能接收到设备推送的notification。
-  onBLECharacteristicValueChange:function(){
+  onBLECharacteristicValueChange: function () {
     var that = this;
     wx.onBLECharacteristicValueChange(function (res) {
       var resValue = utils.ab2hext(res.value); //16进制字符串
       var resValueStr = utils.hexToString(resValue);
-  
+
       var log0 = that.data.textLog + "成功获取：" + resValueStr + "\n";
       that.setData({
         textLog: log0,
@@ -176,23 +176,23 @@ Page({
     });
   },
   //orderInput
-  orderInput:function(e){
+  orderInput: function (e) {
     this.setData({
       orderInputStr: e.detail.value
     })
   },
 
   //发送指令
-  sentOrder:function(){
-    var that = this; 
-    var orderStr = that.data.orderInputStr;//指令
+  sentOrder: function () {
+    var that = this;
+    var orderStr = that.data.orderInputStr; //指令
     let order = utils.stringToBytes(orderStr);
     that.writeBLECharacteristicValue(order);
   },
 
   //向低功耗蓝牙设备特征值中写入二进制数据。
   //注意：必须设备的特征值支持write才可以成功调用，具体参照 characteristic 的 properties 属性
-  writeBLECharacteristicValue: function (order){
+  writeBLECharacteristicValue: function (order) {
     var that = this;
     let byteLength = order.byteLength;
     var log = that.data.textLog + "当前执行指令的字节长度:" + byteLength + "\n";
@@ -208,9 +208,9 @@ Page({
       value: order.slice(0, 20),
       success: function (res) {
         if (byteLength > 20) {
-          setTimeout(function(){
+          setTimeout(function () {
             // that.writeBLECharacteristicValue(order.slice(20, byteLength));
-          },150);
+          }, 150);
         }
         var log = that.data.textLog + "写入成功：" + res.errMsg + "\n";
         that.setData({
@@ -219,12 +219,12 @@ Page({
       },
 
       fail: function (res) {
-        var log = that.data.textLog + "写入失败" + res.errMsg+"\n";
+        var log = that.data.textLog + "写入失败" + res.errMsg + "\n";
         that.setData({
           textLog: log,
         });
       }
-      
+
     })
   },
 

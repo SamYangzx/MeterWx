@@ -1,0 +1,4 @@
+/* pages/private/private.wxss */
+
+
+button {margin: 10px;}

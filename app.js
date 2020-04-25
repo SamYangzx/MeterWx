@@ -1,6 +1,6 @@
 //app.js
 App({
-  onLaunch: function() {
+  onLaunch: function () {
     // 登录
     wx.login({
       success: res => {
@@ -27,7 +27,7 @@ App({
           })
         }
       },
-      fail: function(res) {
+      fail: function (res) {
         console.log("获取信息失败", res)
       }
     })
@@ -35,36 +35,36 @@ App({
     this.globalData.sysinfo = wx.getSystemInfoSync();
   },
 
-  getModel: function() { //获取手机型号
+  getModel: function () { //获取手机型号
     return this.globalData.sysinfo["model"]
   },
-  getWxVersion: function() { //获取微信版本号
+  getWxVersion: function () { //获取微信版本号
     return this.globalData.sysinfo["version"]
   },
-  getSystem: function() { //获取操作系统版本
+  getSystem: function () { //获取操作系统版本
     return this.globalData.sysinfo["system"]
   },
-  getPlatform: function() { //获取客户端平台
+  getPlatform: function () { //获取客户端平台
     return this.globalData.sysinfo["platform"]
   },
-  getSDKVersion: function() { //获取客户端基础库版本
+  getSDKVersion: function () { //获取客户端基础库版本
     return this.globalData.sysinfo["SDKVersion"]
   },
 
   //toast提示
-  toastTips: function(txt) {
+  toastTips: function (txt) {
     wx.showToast({
       title: txt
     })
   },
   //toast提示，可以设置等待时长
-  toastTips1: function(txt, time) {
+  toastTips1: function (txt, time) {
     wx.showToast({
       title: txt,
       duration: time
     })
   },
-  toastTips2: function(txt) {
+  toastTips2: function (txt) {
     wx.showToast({
       title: txt,
       icon: "loading"
@@ -72,7 +72,7 @@ App({
   },
 
   //弹窗提示
-  showModal: function(txt) {
+  showModal: function (txt) {
     wx.showModal({
       title: '提示',
       content: txt,
@@ -80,7 +80,7 @@ App({
     })
   },
   //弹窗提示,有确认按钮
-  showModal1: function(txt) {
+  showModal1: function (txt) {
     wx.showModal({
       title: "提示",
       content: txt,
@@ -89,14 +89,14 @@ App({
     })
   },
   //loading
-  showLoading: function(txt) {
+  showLoading: function (txt) {
     wx.showLoading({
       title: txt,
       mask: true
     });
   },
 
-  isBlank: function(str) {
+  isBlank: function (str) {
     if (Object.prototype.toString.call(str) === '[object Undefined]') { //空
       return true
     } else if (
@@ -112,8 +112,20 @@ App({
   },
 
   globalData: {
+    // CHECKSUM_SUCCESS_HEXCMD:"BB02F9FDCC",
+    CHECKSUM_FAILED_HEXCMD: "BB02FFFDCC",
     userInfo: null,
-    sysinfo: null
+    sysinfo: null,
+    textLog: "",
+    deviceId: "",
+    name: "",
+    allRes: "",
+    serviceId: "",
+    readCharacteristicId: "",
+    writeCharacteristicId: "",
+    notifyCharacteristicId: "",
+    connected: false,
+    canWrite: false
   }
 
 

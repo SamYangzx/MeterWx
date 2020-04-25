@@ -1,15 +1,43 @@
 {
   "pages": [
-    "pages/index/index",
+    "pages/measure/measure",
+    "pages/calibrate/calibrate",
+    "pages/private/private",
+    "pages/scan/scan",
     "pages/functionPage/functionPage",
     "pages/about/about"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#179B16",
-    "navigationBarTitleText": "小程序蓝牙调试工具",
+    "navigationBarTitleText": "Meter仪表测量器",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "borderStyle": "white",
+    "list": [
+      
+      {
+        "pagePath": "pages/measure/measure",
+        "iconPath": "images/measure.png",
+        "selectedIconPath": "images/measure_selected.png",
+        "text": "测量"
+      },
+      {
+        "pagePath": "pages/calibrate/calibrate",
+        "iconPath": "images/calibrate.png",
+        "selectedIconPath": "images/calibrate_selected.png",
+        "text": "标定"
+      },
+      {
+        "pagePath": "pages/private/private",
+        "iconPath": "images/private.png",
+        "selectedIconPath": "images/private_selected.png",
+        "text": "我的"
+      }
+
+    ]
   },
   "sitemapLocation": "sitemap.json"
 }

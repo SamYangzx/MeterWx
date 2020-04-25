@@ -11,7 +11,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.3.0",
+	"libVersion": "2.10.4",
 	"appid": "wxd3367699d95fd4f4",
 	"projectname": "BlueToothDemo",
 	"isGameTourist": false,
