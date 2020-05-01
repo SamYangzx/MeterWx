@@ -12,6 +12,7 @@ var LOAD_CMD_CODE = "E6";
 var SAVE_CALIBRATE_CMD_CODE = "E7";
 var BATTERY_CMD_CODE = "E8";
 var MAX_MEASURE_CMD_CODE = "E9";
+var CHECK_ERROR_CMD_CODE = "FF";
 //CMD type end
 
 // 字符串转byte
@@ -112,6 +113,9 @@ function byteToString(arr) {
 }
 
 function string2HexString(s) {
+  if (s == "" || s == null) {
+    return "";
+  }
   return ab2hext(stringToBytes(s));
 }
 
@@ -186,7 +190,7 @@ function getValueUnitIndex(str) {
   for (var i = 0; i < str.length; i++) {
     if (str[i] >= 'A') { //字母的高4为会大于4
       index = i;
-      console.log("str[i] >= '4' , i: " + i);
+      // console.log("str[i] >= '4' , i: " + i);
       break;
     }
   }
@@ -251,7 +255,8 @@ module.exports = {
   UPLOCD_CMD_CODE: UPLOCD_CMD_CODE,
   BATTERY_CMD_CODE: BATTERY_CMD_CODE,
   MAX_MEASURE_CMD_CODE: MAX_MEASURE_CMD_CODE,
-  RESET_CMD_CODE:RESET_CMD_CODE,
+  RESET_CMD_CODE: RESET_CMD_CODE,
+  CHECK_ERROR_CMD_CODE: CHECK_ERROR_CMD_CODE,
 
   test: test,
   stringToBytes: stringToBytes,

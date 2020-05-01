@@ -1,7 +1,7 @@
 // pages/measure/measure.js
 var app = getApp();
 var utils = require("../../utils/util.js");
-// var bles = require("../../utils/ble.js");
+var bles = require("../../utils/ble.js");
 
 var batteryStr = '电量 0%'
 var measure = '0'
@@ -80,10 +80,11 @@ Page({
       name: devname,
       serviceId: devserviceid
     });
+    app.globalData.recCb = that.handledCmd;
     if (app.globalData.connected) {
       //获取特征值
-      console.log('invoke getBLEDeviceCharacteristics');
-      that.getBLEDeviceCharacteristics();
+      // that.getBLEDeviceCharacteristics();
+      bles.getBLEDeviceCharacteristics();
 
     }
   },
@@ -358,7 +359,7 @@ Page({
 
         } else {
           console.log("check error!!");
-          sendData(app.globalData.CHECKSUM_FAILED_HEXCMD);
+          sendData(utils.CHECK_ERROR_CMD_CODE, "", true);
         }
       }
     });
@@ -427,29 +428,48 @@ Page({
   },
 
   test: function () {
-    var res = utils.stringToBytes(utils.hexToString("AA12"));
-    var resValue16 = utils.ab2hext(res); //16进制字符串
-    var resValueStr = utils.hexToString(resValue16);
-    console.log("16str: " + resValue16);
-
-    var res2 = utils.stringToBytes(utils.hexToString("AA12E4"));
-    console.log("res2: " + utils.ab2hext(res2));
-    var check = 0;
-    resValue16 = "12E4016368616E656C3120303030302E304EBB";
-    for (var i = 0; i < resValue16.length; i = i + 2) {
-      var ii = parseInt(resValue16.substring(i, i + 1), 16);
-      check ^= ii;
-    }
-    console.log("check: " + check);
-
-    if ('c' > 'a') {
-      console.log("c >a");
-    }
-
     utils.test();
     console.log("-----------");
 
+  },
 
+  handledCmd: function (data) {
+    var that = this;
+    var _wholeCmd16 = data;
+    console.log("wholeCmd16: " + _wholeCmd16);
+    var wholeCmd16Length = _wholeCmd16.length;
+    var head = _wholeCmd16.substring(0, 2);
+    var lengthInCmd = parseInt(_wholeCmd16.substring(2, 4), 16);
+    var type = _wholeCmd16.substring(4, 6);
+    console.log("cmd type: " + type);
+    switch (type.toUpperCase()) {
+      case utils.UPLOCD_CMD_CODE:
+        //不要前面的channel部分
+        var valueUnit16 = _wholeCmd16.substring(24, wholeCmd16Length - 4);
+        var valueUnitS = utils.hexToString(valueUnit16);
+        console.log("valueUnit16：" + valueUnit16);
+        console.log("valueUnitS" + valueUnitS);
+        var index = utils.getValueUnitIndex(valueUnitS);
+        var value = utils.getStrWithoutFront0(valueUnitS.substring(0, index));
+        console.log("value" + value);
+        if (value == null) {
+          console.error("value is null");
+          break;
+        }
+        that.setData({
+          measure: value,
+        });
+        break;
+      case utils.BATTERY_CMD_CODE:
+        var value = parseInt(_wholeCmd16.substring(6, 7), 10);
+        that.setData({
+          // batteryStr = value * 25
+        });
+        break;
+
+      default:
+        console.log("default");
+    }
   },
 
   /**
