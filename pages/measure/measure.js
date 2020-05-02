@@ -127,11 +127,11 @@ Page({
     this.setData({
       measure: '0'
     })
-    this.sendData(utils.RESET_CMD_CODE, "", true);
+    bles.sendData(utils.RESET_CMD_CODE, "", true);
   },
 
   maxValue: function (e) {
-    this.sendData(utils.MAX_MEASURE_CMD_CODE, "", true);
+    bles.sendData(utils.MAX_MEASURE_CMD_CODE, "", true);
   },
 
   bindMultiPickerChange: function (e) {
@@ -139,7 +139,7 @@ Page({
     this.setData({
       multiIndex: e.detail.value
     })
-    // this.sendData()
+    // bles.sendData()
   },
 
   bindMultiPickerColumnChange: function (e) {
@@ -359,7 +359,7 @@ Page({
 
         } else {
           console.log("check error!!");
-          sendData(utils.CHECK_ERROR_CMD_CODE, "", true);
+          bles.sendData(utils.CHECK_ERROR_CMD_CODE, "", true);
         }
       }
     });
@@ -379,13 +379,14 @@ Page({
     that.writeBLECharacteristicValue(order);
   },
 
+  
   //发送字符串
-  sendData: function (cmdCode, origin, hex) {
-    var that = this;
-    var data = hex ? utils.PLATFORM_PRE_CODE + cmdCode + origin : utils.COLLECTOR_PRE_CODE + cmdCode + utils.string2HexString(origin);
-    let order = utils.hex2Bytes(data);
-    that.writeBLECharacteristicValue(order);
-  },
+  // sendData: function (cmdCode, origin, hex) {
+  //   var that = this;
+  //   var data = hex ? utils.PLATFORM_PRE_CODE + cmdCode + origin : utils.COLLECTOR_PRE_CODE + cmdCode + utils.string2HexString(origin);
+  //   let order = utils.hex2Bytes(data);
+  //   that.writeBLECharacteristicValue(order);
+  // },
 
   //向低功耗蓝牙设备特征值中写入二进制数据。
   //注意：必须设备的特征值支持write才可以成功调用，具体参照 characteristic 的 properties 属性
