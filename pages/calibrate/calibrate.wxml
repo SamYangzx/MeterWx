@@ -1,11 +1,23 @@
 <!--pages/calibrate/calibrate.wxml-->
 
-<scroll-view class='main-scroll' scroll-y style="height: 80%">
-	<text style="width:200px; height:200px; display:flex; justify-content:center; align-items:center;">{{measure}}</text>
-</scroll-view>
+<view class='page-body'>
+	<view class="row_center_view">
+		<text class="text_singleline">{{measure}}</text>
+		<text class="text_singleline">{{unit}}</text>
+	</view>
 
-<view class="flex-row" style="display: flex;flex-direction: row;">
-	<button bindtap="reset">清零</button>
-	<button bindtap="confirm">确认</button>
-	<button bindtap="save">保存</button>
+	<scroll-view class="calibrate_list" scroll-y scroll-with-animation>
+		<view class="list_content" wx:for="{{calibratePoints}}" wx:key="index" hover-class="device_item_hover">
+			<!-- {{item.index}} -->
+			<view>标定点{{index}}：</view>
+			<input class="weui-input" auto-focus bindinput="bindKeyInput" value="{{item.value}}" placeholder="请输入测量值" />
+			<image style="width: 50rpx; height: 50rpx;" bindtap="{{item.hide? '':'addCalibratePoint'}}" mode="aspectFit" src="../../images/add.png"></image>
+		</view>
+	</scroll-view>
+
+	<view class="flex-row" style="display: flex;flex-direction: row;margin-top:50rpx">
+		<button bindtap="reset">清零</button>
+		<button bindtap="confirm">确认</button>
+		<button bindtap="save">保存</button>
+	</view>
 </view>

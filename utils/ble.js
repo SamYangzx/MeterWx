@@ -176,6 +176,7 @@ function onBLECharacteristicValueChange() {
 //注意：必须设备的特征值支持write才可以成功调用，具体参照 characteristic 的 properties 属性
 function writeBLECharacteristicValue(order) {
   if (!app.globalData.connected) {
+    console.log("No devices connected!!");
     return;
   }
   var that = this;

@@ -116,6 +116,7 @@ App({
     CHECKSUM_FAILED_HEXCMD: "BB02FFFDCC",
     userInfo: null,
     sysinfo: null,
+    unit: "N",
     wholeCmd16: "",
     lastCmdLength: 0,
     recCb: null,

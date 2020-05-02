@@ -139,6 +139,7 @@ Page({
   },
 
   bindMultiPickerChange: function (e) {
+    var that = this;
     console.log('picker  ', e.detail.value)
     var data = {
       multiArray: this.data.multiArray
@@ -151,13 +152,14 @@ Page({
         data.multiArray[1] = ["km", "m", "dm", "cm", "mm", "μm", "nm", "inch", "ft", "mm/s", "m/s", "km/h", "mm/min", ""]
         break
     }
-    // this.setData(data);
+
+    app.globalData.unit = data.multiArray[1][e.detail.value[1]];
     this.setData({
+      unit: app.globalData.unit,
       actualArray: data.multiArray,
-      // multiIndex: e.detail.value,
       actualIndex: e.detail.value
     })
-    // bles.sendData()
+    bles.sendData(utils.CALIBRATE_CMD_CODE, app.globalData.unit, false);
   },
 
   bindMultiPickerColumnChange: function (e) {

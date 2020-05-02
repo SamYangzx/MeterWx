@@ -1,29 +1,28 @@
 <!--pages/measure/measure.wxml-->
-<view class="battery_view">
-	<text>{{battery}}</text>
-</view>
 
+<view class='page-body'>
+	<view class="battery_view">
+		<text>{{battery}}</text>
+	</view>
 
-<!-- <scroll-view class='main-scroll' scroll-y style="height: 20%"> -->
-<view class="row_center_view">
-	<text class="text_singleline">{{measure}}</text>
-	<text class="text_singleline">{{unit}}</text>
-</view>
+	<view class="row_center_view">
+		<text class="text_singleline">{{measure}}</text>
+		<text class="text_singleline">{{unit}}</text>
+	</view>
 
-<!-- </scroll-view> -->
-<scroll-view class='main-scroll' scroll-y style="height: 60%">
-	<text>{{textLog}}</text>
+	<scroll-view class='main-scroll' scroll-y style="display: flex; flex-shrink:1;">
+		<text>{{textLog}}</text>
+	</scroll-view>
 
-</scroll-view>
-
-<view class="row_center_view">
-	<button bindtap="reset">清零</button>
-	<button bindtap="maxValue">峰值</button>
-	<view class="section">
-		<picker mode="multiSelector" bindtap="bindPickerTap" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
-			<view class="picker">
-				单位：{{actualArray[1][actualIndex[1]]}}
-			</view>
-		</picker>
+	<view class="row_center_view">
+		<button bindtap="reset">清零</button>
+		<button bindtap="maxValue">峰值</button>
+		<view class="section">
+			<picker mode="multiSelector" bindtap="bindPickerTap" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+				<view class="picker">
+					单位：{{actualArray[1][actualIndex[1]]}}
+				</view>
+			</picker>
+		</view>
 	</view>
 </view>

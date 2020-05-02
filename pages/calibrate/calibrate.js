@@ -3,13 +3,21 @@ var app = getApp();
 var utils = require("../../utils/util.js");
 var bles = require("../../utils/ble.js");
 
-var measure = '0 N'
+var measure = '0'
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    calibratePoints: [{
+      id: 0,
+      value: "",
+      hide: false
+    }],
+    measure: measure,
+    unit: app.globalData.unit,
+    currentInput: "",
 
   },
 
@@ -40,6 +48,9 @@ Page({
         }
       })
     }
+    that.setData({
+      unit: app.globalData.unit,
+    });
     app.globalData.recCb = that.handledCmd;
     if (app.globalData.connected) {
       //获取特征值
@@ -78,6 +89,38 @@ Page({
 
   },
 
+  bindKeyInput: function (e) {
+    var that = this;
+    that.data.currentInput = e.detail.value
+    console.log("input: " + that.data.currentInput);
+
+  },
+
+  addCalibratePoint: function () {
+    var that = this;
+    var length = that.data.calibratePoints.length;
+    if (length > 0) {
+      that.data.calibratePoints[length - 1].value = that.data.currentInput;
+      that.data.calibratePoints[length - 1].hide = true;
+    } else {
+      console.log("error! Length is wrong!");
+    }
+    var obj = [{
+      id: length,
+      value: "",
+      hide: false
+    }];
+
+    this.data.calibratePoints = that.data.calibratePoints.concat(obj);
+    this.setData({
+      calibratePoints: this.data.calibratePoints
+    });
+    // console.log("this.data.calibratePoints: " + this.data.calibratePoints);
+    // bles.sendData(utils.CALIBRATE_CMD_CODE, that.data.currentInput, false);
+    that.data.currentInput = "";
+
+  },
+
   reset: function (e) {
     this.setData({
       measure: '0'
@@ -86,10 +129,7 @@ Page({
   },
 
   confirm: function (e) {
-    this.setData({
-      measure: '100'
-    })
-    // bles.setData(utils.CONFIRM_CAL_CMD_CODE, );
+    bles.setData(utils.CONFIRM_CAL_CMD_CODE, this.data.currentInput, false);
   },
 
   save: function (e) {
