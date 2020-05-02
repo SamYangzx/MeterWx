@@ -3,9 +3,7 @@
     "pages/measure/measure",
     "pages/calibrate/calibrate",
     "pages/private/private",
-    "pages/scan/scan",
-    "pages/functionPage/functionPage",
-    "pages/about/about"
+    "pages/scan/scan"
   ],
   "window": {
     "backgroundTextStyle": "light",

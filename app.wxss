@@ -37,10 +37,3 @@
   color: #353535;
   line-height: 2em;
 }
-.about-img {
-  position: fixed;
-  width: 100rpx;
-  height: 100rpx;
-  bottom: 30rpx;
-  right: 30rpx;
-}

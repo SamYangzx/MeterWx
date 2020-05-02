@@ -338,12 +338,6 @@ Page({
             app.globalData.connected = true;
             console.log('app.globalData.connected: ' + app.globalData.connected);
 
-            
-            // wx.navigateTo({
-            //   // url: '/pages/functionPage/functionPage?name=' + encodeURIComponent(that.data.name) + '&deviceId=' + encodeURIComponent(devId) + '&serviceId=' + encodeURIComponent(res.services[i].uuid)
-            //   // url: '/pages/measure/measure?name=' + encodeURIComponent(that.data.name) + '&deviceId=' + encodeURIComponent(devId) + '&serviceId=' + encodeURIComponent(res.services[i].uuid)
-            // });
-
             wx.switchTab({
               url: '/pages/measure/measure'
             });
@@ -353,13 +347,6 @@ Page({
       }
     })
   },
-
-  //关于
-  aboutClick: function () {
-    wx.navigateTo({
-      url: '/pages/about/about'
-    });
-  }
 
 
 })

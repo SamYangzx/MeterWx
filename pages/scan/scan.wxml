@@ -33,5 +33,5 @@
     </view>
   </scroll-view>
 
-  <image class='about-img' src='../../images/about.png' bindtap='aboutClick'></image>
+
 </view>
