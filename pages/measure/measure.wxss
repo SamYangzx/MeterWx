@@ -1,1 +1,16 @@
 /* pages/measure/measure.wxss */
+
+.battery_view {
+  margin-left: 5%;
+  margin-top: 10rpx;
+}
+
+.row_center_view {
+  width: 90%;
+  /* margin-left: 5%; */
+  margin-top: 100rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center
+}

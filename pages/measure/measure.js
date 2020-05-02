@@ -21,7 +21,11 @@ Page({
       ['N', 'kN', 'cN', 'mN', 'kgf', 'daN', 'Lbf', '']
     ],
     multiIndex: [0, 0],
-
+    actualIndex: [0, 0],
+    actualArray: [
+      ['力值', '长度'],
+      ['N', 'kN', 'cN', 'mN', 'kgf', 'daN', 'Lbf', '']
+    ],
 
     textLog: "",
     deviceId: "",
@@ -136,14 +140,28 @@ Page({
 
   bindMultiPickerChange: function (e) {
     console.log('picker  ', e.detail.value)
+    var data = {
+      multiArray: this.data.multiArray
+    };
+    switch (e.detail.value[0]) {
+      case 0:
+        data.multiArray[1] = ["N", "kN", "cN", "mN", "kgf", "daN", "Lbf", ""]
+        break
+      case 1:
+        data.multiArray[1] = ["km", "m", "dm", "cm", "mm", "μm", "nm", "inch", "ft", "mm/s", "m/s", "km/h", "mm/min", ""]
+        break
+    }
+    // this.setData(data);
     this.setData({
-      multiIndex: e.detail.value
+      actualArray: data.multiArray,
+      // multiIndex: e.detail.value,
+      actualIndex: e.detail.value
     })
     // bles.sendData()
   },
 
   bindMultiPickerColumnChange: function (e) {
-    console.log('修改的列为', e.detail.column, '，值为', e.detail.value);
+    // console.log('修改的列为', e.detail.column, '，值为', e.detail.value);
     var data = {
       multiArray: this.data.multiArray,
       multiIndex: this.data.multiIndex
@@ -165,6 +183,12 @@ Page({
 
     }
     this.setData(data);
+  },
+
+  bindPickerTap: function (e) {
+    this.setData({
+      multiIndex: this.data.actualIndex
+    })
   },
 
   //返回蓝牙是否正处于链接状态
@@ -379,7 +403,7 @@ Page({
     that.writeBLECharacteristicValue(order);
   },
 
-  
+
   //发送字符串
   // sendData: function (cmdCode, origin, hex) {
   //   var that = this;
