@@ -10,7 +10,7 @@
 </wxs>
 
 <view class='page-body'>
-	<view class='log'>
+	<view class='log' hidden="true">
 		<view>展示log日志(可滑动查看)：</view>
 		<view>
 			<scroll-view scroll-y="true" class='text-box scroll-list'>
@@ -19,7 +19,7 @@
 		</view>
 	</view>
 	<view class='scan-view'>
-		<button type="primary" bindtap="startClear">清空log日志</button>
+		<button type="primary" bindtap="startClear" hidden="true">清空log日志</button>
 		<button type="primary" bindtap="startScan">扫描蓝牙设备</button>
 	</view>
 
