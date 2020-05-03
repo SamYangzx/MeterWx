@@ -1,8 +1,9 @@
 <!--pages/measure/measure.wxml-->
 
-<view class='page-body'>
+<view class="page-body-start">
 	<view class="battery_view">
-		<text>{{battery}}</text>
+		<canvas canvas-id='canvas' style="height:70px"></canvas>
+		<text hidden="false">{{battery}}</text>
 	</view>
 
 	<view class="row_center_view">
@@ -10,20 +11,18 @@
 		<text class="text_singleline">{{unit}}</text>
 	</view>
 
-	<scroll-view class='main-scroll' scroll-y style="display: flex; flex-shrink:1;">
-		<text>{{textLog}}</text>
+	<scroll-view class='main-scroll' scroll-y style="display: flex;flex-grow:1; flex-shrink:1;">
+		<text hidden="true">{{textLog}}</text>
 	</scroll-view>
 
-	<view class="row_center_view">
+	<view class="row_center_view" style="margin-bottom:5%">
 		<button bindtap="reset">清零</button>
 		<button bindtap="maxValue">峰值</button>
-		<view class="section">
-			<picker mode="multiSelector" bindtap="bindPickerTap" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
-				<view class="picker">
-					单位：{{actualArray[1][actualIndex[1]]}}
-				</view>
-			</picker>
-		</view>
+		<picker mode="multiSelector" bindtap="bindPickerTap" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+			<view class="picker">
+				单位：{{actualArray[1][actualIndex[1]]}}
+			</view>
+		</picker>
 	</view>
 
 	<mp-dialog title="未连接设备" show="{{dialogShow}}" bindbuttontap="tapConnectButton" buttons="{{buttons}}">

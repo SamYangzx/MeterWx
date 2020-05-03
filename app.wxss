@@ -18,6 +18,16 @@ page {
   font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
 }
 
+.page-body-start {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* center水平居中 align-items:center;垂直居中*/
+  font-size: 32rpx;
+  font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -44,7 +54,7 @@ page {
 
 .row_center_view {
   /* margin-left: 5%; */
-  margin-top: 100rpx;
+  /* margin-top: 100rpx; */
   display: flex;
   flex-direction: row;
   justify-content: center;

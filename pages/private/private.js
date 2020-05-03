@@ -1,11 +1,15 @@
 // pages/private/private.js
+var app = getApp();
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    userInfo: {},
+    hasUserInfo: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
 
   /**
@@ -57,11 +61,13 @@ Page({
 
   },
 
-  getInfo: function () {
-    console.log('getInfo');
-    wx.navigateBack({
-      url: '/pages/measure/measure'
-    });
+  getUserInfo: function (e) {
+    console.log(e)
+    app.globalData.userInfo = e.detail.userInfo
+    this.setData({
+      userInfo: e.detail.userInfo,
+      hasUserInfo: true
+    })
   },
 
   find_device: function () {

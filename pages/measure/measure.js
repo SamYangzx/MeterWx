@@ -3,9 +3,17 @@ var app = getApp();
 var utils = require("../../utils/util.js");
 var bles = require("../../utils/ble.js");
 
-var batteryStr = '电量 0%'
 var measure = '0'
 var unit = 'N'
+
+const BATTERY_WIDTH = 40
+const BATTERY_HEIGHT = 60
+const BATTERY_HEAD_HEIGHT = 10
+const GREY_COLOR = '#9C9C9C'
+const LINE_WIDTH = 2
+const LEFT_BATTERY_HEIGHT = BATTERY_HEIGHT - BATTERY_HEAD_HEIGHT - LINE_WIDTH * 2
+const BATTERY_GRIDS = 3 //battery 
+
 var allLog = false;
 Page({
 
@@ -13,7 +21,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    battery: batteryStr,
+    battery: 0,
     measure: measure,
     unit: unit,
     multiArray: [
@@ -52,19 +60,46 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
+
+  },
+
+  drawBattery: function (value) {
+    const ctx = wx.createCanvasContext('canvas')
+    ctx.setLineWidth(LINE_WIDTH)
+    ctx.setFillStyle(GREY_COLOR)
+    ctx.fillRect(LINE_WIDTH + 10, 0, BATTERY_WIDTH - 20, BATTERY_HEAD_HEIGHT)
+    ctx.setStrokeStyle(GREY_COLOR)
+    ctx.strokeRect(LINE_WIDTH, BATTERY_HEAD_HEIGHT, BATTERY_WIDTH, BATTERY_HEIGHT - BATTERY_HEAD_HEIGHT)
+    ctx.setFillStyle('#1aad19')
+
+    if (value > BATTERY_GRIDS) {
+      battery = LEFT_BATTERY_HEIGHT;
+    } else {
+      var battery = (value * LEFT_BATTERY_HEIGHT / BATTERY_GRIDS).toFixed(0);
+    }
+    var startHeight = BATTERY_HEIGHT - battery - LINE_WIDTH;
+    // if (startHeight <= BATTERY_HEAD_HEIGHT) {
+    //   startHeight = BATTERY_HEAD_HEIGHT + LINE_WIDTH;
+    // } else if (startHeight >= BATTERY_HEIGHT) {
+    //   startHeight = startHeight - LINE_WIDTH;
+    // }
+    ctx.fillRect(LINE_WIDTH * 2, startHeight, (BATTERY_WIDTH - LINE_WIDTH * 2), battery)
+    ctx.draw()
+  },
+
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
     var that = this;
     if (!app.globalData.connected) {
       this.setData({
         dialogShow: true
       })
     }
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
+    this.drawBattery(that.data.battery);
 
   },
 
@@ -525,8 +560,9 @@ Page({
       case utils.BATTERY_CMD_CODE:
         var value = parseInt(_wholeCmd16.substring(6, 7), 10);
         that.setData({
-          // batteryStr = value * 25
+          battery: value
         });
+        that.drawBattery(that.data.battery);
         break;
 
       default:

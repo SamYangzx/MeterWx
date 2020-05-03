@@ -2,7 +2,7 @@
 
 .battery_view {
   margin-left: 5%;
-  margin-top: 10rpx;
+  margin-top: 50rpx;
 }
 
 .row_center_view {
@@ -11,6 +11,6 @@
   margin-top: 100rpx;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center
+  /* justify-content: center;
+  align-items: center */
 }
