@@ -15,7 +15,7 @@
   "tabBar": {
     "borderStyle": "white",
     "list": [
-      
+
       {
         "pagePath": "pages/measure/measure",
         "iconPath": "images/measure.png",
@@ -38,4 +38,5 @@
     ]
   },
   "sitemapLocation": "sitemap.json"
+
 }

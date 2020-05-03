@@ -25,4 +25,9 @@
 			</picker>
 		</view>
 	</view>
+
+	<mp-dialog title="未连接设备" show="{{dialogShow}}" bindbuttontap="tapConnectButton" buttons="{{buttons}}">
+		<view>请先打开蓝牙和位置信息，点击确定后会进入设备搜索界面。</view>
+	</mp-dialog>
+
 </view>

@@ -27,6 +27,13 @@ Page({
       ['N', 'kN', 'cN', 'mN', 'kgf', 'daN', 'Lbf', '']
     ],
 
+    dialogShow: false,
+    buttons: [{
+      text: '取消'
+    }, {
+      text: '确定'
+    }],
+
     textLog: "",
     deviceId: "",
     name: "",
@@ -46,7 +53,11 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-
+    if (!app.globalData.connected) {
+      this.setData({
+        dialogShow: true
+      })
+    }
 
   },
 
@@ -119,6 +130,30 @@ Page({
    */
   onReachBottom: function () {
 
+  },
+
+  tapConnectButton(e) {
+    console.log("index: " + e.detail.index + ", item: " + e.detail.item);
+    this.setData({
+      dialogShow: false,
+    })
+
+    if (e.detail.index == "1") {
+
+      wx.navigateTo({
+        url: '../scan/scan',
+        success: function (res) {
+          // success
+        },
+        fail: function () {
+          // fail
+        },
+
+        complete: function () {
+          // complete
+        }
+      });
+    }
   },
 
   showBattery: function (e) {
