@@ -143,6 +143,11 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
+    if (this.data.dialogShow) {
+      this.setData({
+        dialogShow: false,
+      })
+    }
 
   },
 
@@ -533,7 +538,10 @@ Page({
   handledCmd: function (data) {
     var that = this;
     var _wholeCmd16 = data;
-    console.log("wholeCmd16: " + _wholeCmd16);
+    that.setData({
+        textLog: app.globalData.textLog
+      }),
+      console.log("wholeCmd16: " + _wholeCmd16);
     var wholeCmd16Length = _wholeCmd16.length;
     var head = _wholeCmd16.substring(0, 2);
     var lengthInCmd = parseInt(_wholeCmd16.substring(2, 4), 16);

@@ -11,8 +11,8 @@
 		<text class="text_singleline">{{unit}}</text>
 	</view>
 
-	<scroll-view class='main-scroll' scroll-y style="display: flex;flex-grow:1; flex-shrink:1;">
-		<text hidden="true">{{textLog}}</text>
+	<scroll-view class='main-scroll' scroll-y style="display: flex;flex-grow:1; flex-shrink:1; max-height: 600rpx;">
+		<text >{{textLog}}</text>
 	</scroll-view>
 
 	<view class="row_center_view" style="margin-bottom:5%">
