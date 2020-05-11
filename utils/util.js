@@ -188,8 +188,8 @@ function getValueUnitIndex(str) {
   var index = 0;
   console.log("str: " + str);
   for (var i = 0; i < str.length; i++) {
+    index = i;
     if (str[i] >= 'A') { //字母的高4为会大于4
-      index = i;
       // console.log("str[i] >= '4' , i: " + i);
       break;
     }
@@ -258,8 +258,8 @@ module.exports = {
   RESET_CMD_CODE: RESET_CMD_CODE,
   CHECK_ERROR_CMD_CODE: CHECK_ERROR_CMD_CODE,
   CONFIRM_CAL_CMD_CODE: CONFIRM_CAL_CMD_CODE,
-  SAVE_CALIBRATE_CMD_CODE:SAVE_CALIBRATE_CMD_CODE,
-  CALIBRATE_CMD_CODE:CALIBRATE_CMD_CODE, 
+  SAVE_CALIBRATE_CMD_CODE: SAVE_CALIBRATE_CMD_CODE,
+  CALIBRATE_CMD_CODE: CALIBRATE_CMD_CODE,
 
   test: test,
   stringToBytes: stringToBytes,
