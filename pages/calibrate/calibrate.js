@@ -125,11 +125,13 @@ Page({
     this.setData({
       measure: '0'
     })
+    app.globalData.textLog = "";
     bles.sendData(utils.RESET_CMD_CODE, "", true);
   },
 
   confirm: function (e) {
-    bles.setData(utils.CONFIRM_CAL_CMD_CODE, this.data.currentInput, false);
+    var valueUnit = this.data.currentInput + app.globalData.unit;
+    bles.sendData(utils.CONFIRM_CAL_CMD_CODE, valueUnit, false);
   },
 
   save: function (e) {

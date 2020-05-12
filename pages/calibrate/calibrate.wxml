@@ -16,8 +16,8 @@
 	</scroll-view>
 
 	<view class="flex-row" style="display: flex;flex-direction: row;margin-top:50rpx">
-		<button bindtap="reset">清零</button>
-		<button bindtap="confirm">确认</button>
-		<button bindtap="save">保存</button>
+		<button type="primary" bindtap="reset">清零</button>
+		<button type="primary" bindtap="confirm">确认</button>
+		<button type="primary" bindtap="save">保存</button>
 	</view>
 </view>

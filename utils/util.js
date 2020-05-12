@@ -158,12 +158,12 @@ function getCheck(hexStr) {
   return int2Hex(check);
 }
 
-function getCmdHex(cmdCode, originData, hex) {
+function getCmdHex(cmdCode, data, hex) {
   var hexData;
   if (hex) {
-    hexData = originData;
+    hexData = data;
   } else {
-    hexData = string2HexString(originData);
+    hexData = string2HexString(data);
   }
 
   var lengthS = int2Hex((cmdCode.length + hexData.length) / 2 + 1);

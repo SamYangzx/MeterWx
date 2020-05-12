@@ -205,7 +205,9 @@ function writeBLECharacteristicValue(order) {
 
 //发送字符串
 function sendData(cmdCode, origin, hex) {
-  var data = hex ? utils.PLATFORM_PRE_CODE + cmdCode + origin : utils.COLLECTOR_PRE_CODE + cmdCode + utils.string2HexString(origin);
+  // var data = hex ? utils.PLATFORM_PRE_CODE + cmdCode + origin : utils.COLLECTOR_PRE_CODE + cmdCode + utils.string2HexString(origin);
+  var data = utils.getCmdHex(cmdCode, origin, hex);
+  console.log("send data: " + data);
   app.globalData.textLog = app.globalData.textLog + "Send: " + data + "\n";
   let order = utils.hex2Bytes(data);
   writeBLECharacteristicValue(order);

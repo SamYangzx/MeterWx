@@ -4,11 +4,13 @@ var utils = require("../../utils/util.js");
 var bles = require("../../utils/ble.js");
 
 var measure = '0'
-var unit = 'N'
+var unit = ''
 
-const BATTERY_WIDTH = 40
-const BATTERY_HEIGHT = 60
-const BATTERY_HEAD_HEIGHT = 10
+const BATTERY_WIDTH = 24
+const BATTERY_PADDING_WIDTH = 6
+const BATTERY_HEAD_WIDTH = BATTERY_WIDTH - BATTERY_PADDING_WIDTH * 2
+const BATTERY_HEIGHT = 40
+const BATTERY_HEAD_HEIGHT = 6
 const GREY_COLOR = '#9C9C9C'
 const LINE_WIDTH = 2
 const LEFT_BATTERY_HEIGHT = BATTERY_HEIGHT - BATTERY_HEAD_HEIGHT - LINE_WIDTH * 2
@@ -42,6 +44,7 @@ Page({
       text: '确定'
     }],
 
+    isMaxMode: "false",
     textLog: "",
     deviceId: "",
     name: "",
@@ -68,7 +71,8 @@ Page({
     const ctx = wx.createCanvasContext('canvas')
     ctx.setLineWidth(LINE_WIDTH)
     ctx.setFillStyle(GREY_COLOR)
-    ctx.fillRect(LINE_WIDTH + 10, 0, BATTERY_WIDTH - 20, BATTERY_HEAD_HEIGHT)
+    ctx.fillRect(LINE_WIDTH + BATTERY_PADDING_WIDTH, 0, BATTERY_HEAD_WIDTH, BATTERY_HEAD_HEIGHT)
+
     ctx.setStrokeStyle(GREY_COLOR)
     ctx.strokeRect(LINE_WIDTH, BATTERY_HEAD_HEIGHT, BATTERY_WIDTH, BATTERY_HEIGHT - BATTERY_HEAD_HEIGHT)
     ctx.setFillStyle('#1aad19')
@@ -206,11 +210,25 @@ Page({
     this.setData({
       measure: '0'
     })
+    app.globalData.textLog = "";
     bles.sendData(utils.RESET_CMD_CODE, "", true);
   },
 
   maxValue: function (e) {
-    bles.sendData(utils.MAX_MEASURE_CMD_CODE, "", true);
+    var that = this
+    if (that.data.isMaxMode) {
+      console.log("isMaxMode true!")
+      bles.sendData(utils.MAX_MEASURE_CMD_CODE, "00", true);
+      this.setData({
+        isMaxMode: "false"
+      })
+    } else {
+      console.log("isMaxMode false!")
+      bles.sendData(utils.MAX_MEASURE_CMD_CODE, "01", true);
+      this.setData({
+        isMaxMode: "true"
+      })
+    }
   },
 
   bindMultiPickerChange: function (e) {
@@ -230,7 +248,7 @@ Page({
 
     app.globalData.unit = data.multiArray[1][e.detail.value[1]];
     this.setData({
-      unit: app.globalData.unit,
+      // unit: app.globalData.unit,
       actualArray: data.multiArray,
       actualIndex: e.detail.value
     })
@@ -267,7 +285,7 @@ Page({
       multiIndex: this.data.actualIndex
     })
   },
-    
+
   test: function () {
     utils.test();
     console.log("-----------");
@@ -302,17 +320,18 @@ Page({
           break;
         }
         that.setData({
-          measure: value,
+          measure: that.data.isMaxMode ? "MAX: " + value : value,
         });
         break;
       case utils.BATTERY_CMD_CODE:
-        var value = parseInt(_wholeCmd16.substring(6, 7), 10);
+        var value = parseInt(_wholeCmd16.substring(6, 8), 10);
         that.setData({
           battery: value
         });
         that.drawBattery(that.data.battery);
         break;
-
+      case utils.MAX_MEASURE_CMD_CODE:
+        break;
       default:
         console.log("default");
     }
