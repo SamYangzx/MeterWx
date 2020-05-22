@@ -17,7 +17,7 @@
 
 	<view class="row_center_view" style="margin-bottom:5%">
 		<button type="primary" bindtap="reset">清零</button>
-		<button type="primary" bindtap="maxValue">峰值</button>
+		<button bindtap="maxValue">峰值</button>
 		<picker mode="multiSelector" bindtap="bindPickerTap" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
 			<view class="picker">
 				单位：{{actualArray[1][actualIndex[1]]}}
@@ -27,6 +27,9 @@
 
 	<mp-dialog title="未连接设备" show="{{dialogShow}}" bindbuttontap="tapConnectButton" buttons="{{buttons}}">
 		<view>请先打开蓝牙和位置信息，点击确定后会进入设备搜索界面。</view>
+	</mp-dialog>
+	<mp-dialog show="{{showResetDlg}}" bindbuttontap="realReset" buttons="{{buttons}}">
+		<view>确认清零吗？</view>
 	</mp-dialog>
 
 </view>

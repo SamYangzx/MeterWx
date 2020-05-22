@@ -38,6 +38,7 @@ Page({
     ],
 
     dialogShow: false,
+    showResetDlg: false,
     buttons: [{
       text: '取消'
     }, {
@@ -208,6 +209,13 @@ Page({
 
   reset: function (e) {
     this.setData({
+      showResetDlg: true
+    })
+  },
+
+  realReset(e) {
+    this.setData({
+      showResetDlg: false,
       measure: '0'
     })
     app.globalData.textLog = "";

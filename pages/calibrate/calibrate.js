@@ -18,6 +18,13 @@ Page({
     measure: measure,
     unit: app.globalData.unit,
     currentInput: "",
+    showResetDlg: false,
+    showSaveDlg: false,
+    buttons: [{
+      text: '取消'
+    }, {
+      text: '确定'
+    }],
 
   },
 
@@ -123,6 +130,13 @@ Page({
 
   reset: function (e) {
     this.setData({
+      showResetDlg: true,
+    })
+  },
+
+  realReset(e) {
+    this.setData({
+      showResetDlg: false,
       measure: '0'
     })
     app.globalData.textLog = "";
@@ -135,6 +149,15 @@ Page({
   },
 
   save: function (e) {
+    this.setData({
+      showSaveDlg: true,
+    })
+  },
+
+  realSave(e) {
+    this.setData({
+      showSaveDlg: false,
+    })
     bles.sendData(utils.SAVE_CALIBRATE_CMD_CODE, "", true);
   },
 
