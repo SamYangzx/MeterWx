@@ -12,9 +12,14 @@ const BATTERY_HEAD_WIDTH = BATTERY_WIDTH - BATTERY_PADDING_WIDTH * 2
 const BATTERY_HEIGHT = 40
 const BATTERY_HEAD_HEIGHT = 6
 const GREY_COLOR = '#9C9C9C'
+const BATTERY_COLOR = '#1aad19'
 const LINE_WIDTH = 2
 const LEFT_BATTERY_HEIGHT = BATTERY_HEIGHT - BATTERY_HEAD_HEIGHT - LINE_WIDTH * 2
 const BATTERY_GRIDS = 3 //battery 
+const RADIS = 3
+
+const MAX_VALUE = "峰值"
+const CURRENT_VALUE = "实时值"
 
 var allLog = false;
 Page({
@@ -45,7 +50,8 @@ Page({
       text: '确定'
     }],
 
-    isMaxMode: "false",
+    isMaxMode: false,
+    maxOrCurrentValue: MAX_VALUE,
     textLog: "",
     deviceId: "",
     name: "",
@@ -71,26 +77,137 @@ Page({
   drawBattery: function (value) {
     const ctx = wx.createCanvasContext('canvas')
     ctx.setLineWidth(LINE_WIDTH)
-    ctx.setFillStyle(GREY_COLOR)
-    ctx.fillRect(LINE_WIDTH + BATTERY_PADDING_WIDTH, 0, BATTERY_HEAD_WIDTH, BATTERY_HEAD_HEIGHT)
+    this.roundRectHead(ctx, LINE_WIDTH + BATTERY_PADDING_WIDTH, 0, BATTERY_HEAD_WIDTH, BATTERY_HEAD_HEIGHT, RADIS, true, GREY_COLOR)
+    this.roundRect(ctx, LINE_WIDTH, BATTERY_HEAD_HEIGHT, BATTERY_WIDTH, BATTERY_HEIGHT - BATTERY_HEAD_HEIGHT, RADIS, false, GREY_COLOR)
 
-    ctx.setStrokeStyle(GREY_COLOR)
-    ctx.strokeRect(LINE_WIDTH, BATTERY_HEAD_HEIGHT, BATTERY_WIDTH, BATTERY_HEIGHT - BATTERY_HEAD_HEIGHT)
-    ctx.setFillStyle('#1aad19')
-
+    var battery = 0;
     if (value > BATTERY_GRIDS) {
       battery = LEFT_BATTERY_HEIGHT;
     } else {
-      var battery = (value * LEFT_BATTERY_HEIGHT / BATTERY_GRIDS).toFixed(0);
+      // battery = (value * LEFT_BATTERY_HEIGHT / BATTERY_GRIDS).toFixed(0);//不行
+      battery = parseInt(value * LEFT_BATTERY_HEIGHT / BATTERY_GRIDS);
     }
     var startHeight = BATTERY_HEIGHT - battery - LINE_WIDTH;
-    // if (startHeight <= BATTERY_HEAD_HEIGHT) {
-    //   startHeight = BATTERY_HEAD_HEIGHT + LINE_WIDTH;
-    // } else if (startHeight >= BATTERY_HEIGHT) {
-    //   startHeight = startHeight - LINE_WIDTH;
-    // }
-    ctx.fillRect(LINE_WIDTH * 2, startHeight, (BATTERY_WIDTH - LINE_WIDTH * 2), battery)
+    // console.log("battery: " + battery + ",  startHeight: " + startHeight)
+    this.roundRect(ctx, LINE_WIDTH * 2, startHeight, (BATTERY_WIDTH - LINE_WIDTH * 2), battery, RADIS, true, BATTERY_COLOR)
     ctx.draw()
+
+  },
+
+
+  /**
+   * 仅绘制左上角，右上角
+   * @param {*} ctx 
+   * @param {*} x 
+   * @param {*} y 
+   * @param {*} w 
+   * @param {*} h 
+   * @param {*} r 
+   * @param {*} fill 
+   * @param {*} color 
+   */
+  roundRectHead: function (ctx, x, y, w, h, r, fill, color) {
+    // 开始绘制
+    ctx.beginPath()
+    // 因为边缘描边存在锯齿，最好指定使用 transparent 填充
+    // 这里是使用 fill 还是 stroke都可以，二选一即可
+    if (fill) {
+      ctx.setFillStyle(color)
+    } else {
+      ctx.setStrokeStyle(color)
+    }
+    // 左上角
+    ctx.arc(x + r, y + r, r, Math.PI, Math.PI * 1.5)
+
+    // border-top
+    ctx.moveTo(x + r, y)
+    ctx.lineTo(x + w - r, y)
+
+    // 右上角
+    ctx.arc(x + w - r, y + r, r, Math.PI * 1.5, Math.PI * 2)
+
+    // border-right
+    ctx.lineTo(x + w, y + h)
+
+    // border-bottom
+    ctx.lineTo(x, y + h)
+
+    // border-left
+    ctx.lineTo(x, y + r)
+
+    // 这里是使用 fill 还是 stroke都可以，二选一即可，但是需要与上面对应
+    if (fill) {
+      ctx.fill()
+    } else {
+      ctx.stroke()
+    }
+    ctx.closePath()
+
+  },
+
+  /**
+   * 绘制圆角矩形
+   * @param {*} ctx 
+   * @param {*} x 
+   * @param {*} y 
+   * @param {*} w 
+   * @param {*} h 
+   * @param {*} r 
+   * @param {*} fill 
+   * @param {*} color 
+   */
+  roundRect: function (ctx, x, y, w, h, r, fill, color) {
+    if (w == 0 || h == 0) {
+      return
+    }
+    if (w < 2 * r) {
+      r = w / 2;
+    }
+    if (h < 2 * r) {
+      r = h / 2;
+    }
+    // 开始绘制
+    ctx.beginPath()
+    // 因为边缘描边存在锯齿，最好指定使用 transparent 填充
+    // 这里是使用 fill 还是 stroke都可以，二选一即可
+    if (fill) {
+      ctx.setFillStyle(color)
+    } else {
+      ctx.setStrokeStyle(color)
+    }
+    // 左上角
+    ctx.arc(x + r, y + r, r, Math.PI, Math.PI * 1.5)
+
+    // border-top
+    ctx.moveTo(x + r, y)
+    ctx.lineTo(x + w - r, y)
+
+    // 右上角
+    ctx.arc(x + w - r, y + r, r, Math.PI * 1.5, Math.PI * 2)
+
+    // border-right
+    ctx.lineTo(x + w, y + h - r)
+
+    // 右下角
+    ctx.arc(x + w - r, y + h - r, r, 0, Math.PI * 0.5)
+
+    // border-bottom
+    ctx.lineTo(x + r, y + h)
+    // 左下角
+    ctx.arc(x + r, y + h - r, r, Math.PI * 0.5, Math.PI)
+
+    // border-left
+    ctx.lineTo(x, y + r)
+
+    // 这里是使用 fill 还是 stroke都可以，二选一即可，但是需要与上面对应
+    if (fill) {
+      ctx.fill()
+    } else {
+      ctx.stroke()
+    }
+    ctx.closePath()
+    // 剪切
+    // ctx.clip()
   },
 
 
@@ -228,13 +345,15 @@ Page({
       console.log("isMaxMode true!")
       bles.sendData(utils.MAX_MEASURE_CMD_CODE, "00", true);
       this.setData({
-        isMaxMode: "false"
+        isMaxMode: false,
+        maxOrCurrentValue: MAX_VALUE,
       })
     } else {
       console.log("isMaxMode false!")
       bles.sendData(utils.MAX_MEASURE_CMD_CODE, "01", true);
       this.setData({
-        isMaxMode: "true"
+        maxOrCurrentValue: CURRENT_VALUE,
+        isMaxMode: true
       })
     }
   },

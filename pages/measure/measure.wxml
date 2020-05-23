@@ -17,7 +17,7 @@
 
 	<view class="row_center_view" style="margin-bottom:5%">
 		<button type="primary" bindtap="reset">清零</button>
-		<button bindtap="maxValue">峰值</button>
+		<button type="primary" bindtap="maxValue">{{maxOrCurrentValue}}</button>
 		<picker mode="multiSelector" bindtap="bindPickerTap" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
 			<view class="picker">
 				单位：{{actualArray[1][actualIndex[1]]}}

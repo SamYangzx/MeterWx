@@ -17,7 +17,7 @@ Page({
     calibratePoints: [{
       id: 0,
       value: "",
-      color: SENT_COLOR,
+      color: SELECT_COLOR,
       hide: false
     }],
     whichIndex: 0,
@@ -118,7 +118,7 @@ Page({
     var that = this;
     var index = this.data.whichIndex;
     console.log("bindFocus.index: " + index);
-    that.data.calibratePoints[this.data.lastIndex].color = SENT_COLOR;
+
     that.data.calibratePoints[index].color = SELECT_COLOR;
     that.setData({
       calibratePoints: this.data.calibratePoints,
@@ -134,7 +134,7 @@ Page({
     var index = this.data.whichIndex;
     console.log("bindBlur.index: " + index);
     that.data.calibratePoints[this.data.lastIndex].value = that.data.currentStr
-    
+
   },
 
   whichSelected: function (event) {
@@ -191,6 +191,11 @@ Page({
   },
 
   confirm: function (e) {
+    var that = this;
+    that.data.calibratePoints[this.data.whichIndex].color = SENT_COLOR;
+    that.setData({
+      calibratePoints: that.data.calibratePoints
+    })
     var valueUnit = this.data.currentStr + app.globalData.unit;
     bles.sendData(utils.CONFIRM_CAL_CMD_CODE, valueUnit, false);
   },
