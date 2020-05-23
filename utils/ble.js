@@ -91,7 +91,7 @@ function onBLECharacteristicValueChange() {
     var resValue16 = utils.ab2hext(res.value); //16进制字符串
     var resValueStr = utils.hexToString(resValue16);
     console.log("receive: " + resValue16);
-    
+
     var needHandled = true;
     //判断命令是否需要拼接
     if (app.globalData.lastCmdLength > 0) {
@@ -207,7 +207,8 @@ function writeBLECharacteristicValue(order) {
 function sendData(cmdCode, origin, hex) {
   // var data = hex ? utils.PLATFORM_PRE_CODE + cmdCode + origin : utils.COLLECTOR_PRE_CODE + cmdCode + utils.string2HexString(origin);
   var data = utils.getCmdHex(cmdCode, origin, hex);
-  console.log("send data: " + data);
+  console.log("send hex data: " + data);
+  console.log("send origin data: " + utils.hexToString(data));
   app.globalData.textLog = app.globalData.textLog + "Send: " + data + "\n";
   let order = utils.hex2Bytes(data);
   writeBLECharacteristicValue(order);

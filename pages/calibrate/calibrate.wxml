@@ -7,10 +7,10 @@
 	</view>
 
 	<scroll-view class="calibrate_list" scroll-y scroll-with-animation>
-		<view class="list_content" wx:for="{{calibratePoints}}" wx:key="index" hover-class="device_item_hover">
+		<view class="list_content" wx:for="{{calibratePoints}}" wx:key="id" id="{{index}}" hover-class="device_item_hover" bindtouchend="whichSelected">
 			<!-- {{item.index}} -->
 			<view>标定点{{index}}：</view>
-			<input class="weui-input" auto-focus bindinput="bindKeyInput" value="{{item.value}}" placeholder="请输入测量值" />
+			<input class="weui-input" style="color:{{item.color}};" auto-focus bindinput="bindKeyInput" bindfocus="bindFocus" bindblur="bindBlur" value="{{item.value}}" placeholder="请输入测量值" />
 			<image style="width: 50rpx; height: 50rpx;" bindtap="{{item.hide? '':'addCalibratePoint'}}" mode="aspectFit" src="{{item.hide? '../../images/add_disable.png': '../../images/add.png'}}"></image>
 		</view>
 	</scroll-view>

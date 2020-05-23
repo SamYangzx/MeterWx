@@ -3,7 +3,11 @@ var app = getApp();
 var utils = require("../../utils/util.js");
 var bles = require("../../utils/ble.js");
 
+const SENT_COLOR = "#888888"
+const SELECT_COLOR = "#000000"
+
 var measure = '0'
+
 Page({
 
   /**
@@ -13,11 +17,15 @@ Page({
     calibratePoints: [{
       id: 0,
       value: "",
+      color: SENT_COLOR,
       hide: false
     }],
+    whichIndex: 0,
+    lastIndex: 0,
+
     measure: measure,
     unit: app.globalData.unit,
-    currentInput: "",
+    currentStr: "",
     showResetDlg: false,
     showSaveDlg: false,
     buttons: [{
@@ -98,16 +106,55 @@ Page({
 
   bindKeyInput: function (e) {
     var that = this;
-    that.data.currentInput = e.detail.value
-    console.log("input: " + that.data.currentInput);
+    that.data.currentStr = e.detail.value
+    console.log("input: " + that.data.currentStr);
+    that.data.calibratePoints[this.data.whichIndex].value = that.data.currentStr
+    that.setData({
+      calibratePoints: this.data.calibratePoints,
+    })
+  },
+
+  bindFocus: function (event) {
+    var that = this;
+    var index = this.data.whichIndex;
+    console.log("bindFocus.index: " + index);
+    that.data.calibratePoints[this.data.lastIndex].color = SENT_COLOR;
+    that.data.calibratePoints[index].color = SELECT_COLOR;
+    that.setData({
+      calibratePoints: this.data.calibratePoints,
+      lastIndex: index,
+      currentStr: that.data.calibratePoints[index].value,
+    });
+    console.log("bindFocus.currentStr: " + that.data.currentStr)
 
   },
 
+  bindBlur: function (event) {
+    var that = this;
+    var index = this.data.whichIndex;
+    console.log("bindBlur.index: " + index);
+    that.data.calibratePoints[this.data.lastIndex].value = that.data.currentStr
+    
+  },
+
+  whichSelected: function (event) {
+    this.setData({
+      whichIndex: event.currentTarget.id
+    })
+    console.log("whichSelected.whichInput: " + this.data.whichIndex);
+  },
+
   addCalibratePoint: function () {
+    //添加行时，index比实际值大1
+    var index = parseInt(this.data.whichIndex, 10)
+    this.setData({
+      whichIndex: index + 1
+    })
+    console.log("addCalibratePoint whichInput: " + this.data.whichIndex)
+
     var that = this;
     var length = that.data.calibratePoints.length;
     if (length > 0) {
-      that.data.calibratePoints[length - 1].value = that.data.currentInput;
       that.data.calibratePoints[length - 1].hide = true;
     } else {
       console.log("error! Length is wrong!");
@@ -122,9 +169,9 @@ Page({
     this.setData({
       calibratePoints: this.data.calibratePoints
     });
-    // console.log("this.data.calibratePoints: " + this.data.calibratePoints);
-    // bles.sendData(utils.CALIBRATE_CMD_CODE, that.data.currentInput, false);
-    that.data.currentInput = "";
+
+    // bles.sendData(utils.CALIBRATE_CMD_CODE, that.data.currentStr, false);
+    that.data.currentStr = "";
 
   },
 
@@ -144,7 +191,7 @@ Page({
   },
 
   confirm: function (e) {
-    var valueUnit = this.data.currentInput + app.globalData.unit;
+    var valueUnit = this.data.currentStr + app.globalData.unit;
     bles.sendData(utils.CONFIRM_CAL_CMD_CODE, valueUnit, false);
   },
 
